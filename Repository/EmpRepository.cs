@@ -1,28 +1,26 @@
-﻿using System;
+﻿using CRUD_MVC_WebApplication.Models;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using CRUD_MVC_WebApplication.Models;
-using System.Linq;
-using System.Web;
-using System.Configuration;
 
 namespace CRUD_MVC_WebApplication.Repository
 {
     public class EmpRepository
     {
         private SqlConnection con;
-        //To Handle connection related activities    
+
+        //To Handle connection related activities
         private void connection()
         {
             string constr = ConfigurationManager.ConnectionStrings["getconn"].ToString();
             con = new SqlConnection(constr);
-
         }
-        //To Add Employee details    
+
+        //To Add Employee details
         public bool AddEmployee(EmpModel obj)
         {
-
             connection();
             SqlCommand com = new SqlCommand("AddNewEmpDetails", con);
             com.CommandType = CommandType.StoredProcedure;
@@ -35,24 +33,19 @@ namespace CRUD_MVC_WebApplication.Repository
             con.Close();
             if (i >= 1)
             {
-
                 return true;
-
             }
             else
             {
-
                 return false;
             }
-
-
         }
-        //To view employee details with generic list     
+
+        //To view employee details with generic list
         public List<EmpModel> GetAllEmployees()
         {
             connection();
             List<EmpModel> EmpList = new List<EmpModel>();
-
 
             SqlCommand com = new SqlCommand("GetEmployees", con);
             com.CommandType = CommandType.StoredProcedure;
@@ -62,30 +55,27 @@ namespace CRUD_MVC_WebApplication.Repository
             con.Open();
             da.Fill(dt);
             con.Close();
-            //Bind EmpModel generic list using dataRow     
+            //Bind EmpModel generic list using dataRow
             foreach (DataRow dr in dt.Rows)
             {
-
                 EmpList.Add(
 
                     new EmpModel
                     {
-
                         Empid = Convert.ToInt32(dr["Id"]),
                         Name = Convert.ToString(dr["Name"]),
                         City = Convert.ToString(dr["City"]),
                         Address = Convert.ToString(dr["Address"])
-
                     }
                     );
             }
 
             return EmpList;
         }
-        //To Update Employee details    
+
+        //To Update Employee details
         public bool UpdateEmployee(EmpModel obj)
         {
-
             connection();
             SqlCommand com = new SqlCommand("UpdateEmpDetails", con);
 
@@ -99,7 +89,6 @@ namespace CRUD_MVC_WebApplication.Repository
             con.Close();
             if (i >= 1)
             {
-
                 return true;
             }
             else
@@ -107,10 +96,10 @@ namespace CRUD_MVC_WebApplication.Repository
                 return false;
             }
         }
-        //To delete Employee details    
+
+        //To delete Employee details
         public bool DeleteEmployee(int Id)
         {
-
             connection();
             SqlCommand com = new SqlCommand("DeleteEmpById", con);
 
@@ -126,7 +115,6 @@ namespace CRUD_MVC_WebApplication.Repository
             }
             else
             {
-
                 return false;
             }
         }
@@ -135,7 +123,6 @@ namespace CRUD_MVC_WebApplication.Repository
         {
             connection();
             EmpModel Emp = new EmpModel();
-
 
             SqlCommand com = new SqlCommand("SelectEmployeeById", con);
             com.CommandType = CommandType.StoredProcedure;
@@ -146,7 +133,7 @@ namespace CRUD_MVC_WebApplication.Repository
             con.Open();
             da.Fill(dt);
             con.Close();
-            //Bind EmpModel generic list using dataRow     
+            //Bind EmpModel generic list using dataRow
             Emp.Empid = Convert.ToInt32(dt.Rows[0]["Id"]);
             Emp.Name = Convert.ToString(dt.Rows[0]["Name"]);
             Emp.City = Convert.ToString(dt.Rows[0]["City"]);

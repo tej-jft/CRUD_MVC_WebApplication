@@ -17,5 +17,12 @@ namespace CRUD_MVC_WebApplication
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected new void AcquireRequestState()
+        {
+
+        }
+
+
     }
 }

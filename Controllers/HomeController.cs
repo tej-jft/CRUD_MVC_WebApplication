@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using CRUD_MVC_WebApplication.Models;
 using CRUD_MVC_WebApplication.Repository;
 
@@ -10,10 +11,16 @@ namespace CRUD_MVC_WebApplication.Controllers
 {
     public class HomeController : Controller
     {
+        public ActionResult About()
+        {
+            System.Web.HttpContext.Current.Application.Lock();
+            string findUser = System.Web.HttpContext.Current.Application["UserIdentifier"].ToString();
+            System.Web.HttpContext.Current.Application.UnLock();
+            return View();
+        }
         // GET: Employee/GetAllEmpDetails    
         public ActionResult GetAllEmpDetails()
         {
-
             EmpRepository EmpRepo = new EmpRepository();
             ModelState.Clear();
             return View(EmpRepo.GetAllEmployees());
@@ -25,7 +32,7 @@ namespace CRUD_MVC_WebApplication.Controllers
         }
 
         // POST: Employee/AddEmployee    
-        [HttpPost]
+        [HttpPost]       
         public ActionResult AddEmployee(EmpModel Emp)
         {
             try
@@ -52,11 +59,7 @@ namespace CRUD_MVC_WebApplication.Controllers
         public ActionResult EditEmpDetails(int id)
         {
             EmpRepository EmpRepo = new EmpRepository();
-
-
-
             return View(EmpRepo.GetAllEmployees().Find(Emp => Emp.Empid == id));
-
         }
 
         // POST: Employee/EditEmpDetails/5    
@@ -82,13 +85,30 @@ namespace CRUD_MVC_WebApplication.Controllers
         {
             try
             {
+                string userType = System.Web.HttpContext.Current.Application["UserIdentifier"].ToString();
                 EmpRepository EmpRepo = new EmpRepository();
-                if (EmpRepo.DeleteEmployee(id))
+                if (userType.Equals("Admin"))
                 {
-                    ViewBag.AlertMsg = "Employee details deleted successfully";
+                    if (EmpRepo.DeleteEmployee(id))
+                    {
+                        ViewBag.AlertMsg = "Employee details deleted successfully.";
+                        return RedirectToAction("GetAllEmpDetails");
 
+                    }
+                    else
+                    {
+                        ViewBag.AlertMsg = String.Format("Insufficient Parameter To Delete.");
+                        return RedirectToAction("GetAllEmpDetails");
+                    }
                 }
-                return RedirectToAction("GetAllEmpDetails");
+                else
+                {
+                    
+                    ViewBag.AlertMsg = "User is not authorize to delete.";
+                    return View();
+                   
+                }
+                
 
             }
             catch
