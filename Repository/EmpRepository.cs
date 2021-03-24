@@ -42,7 +42,7 @@ namespace CRUD_MVC_WebApplication.Repository
         }
 
         //To view employee details with generic list
-        public List<EmpModel> GetAllEmployees()
+        public  List<EmpModel> GetAllEmployees()
         {
             connection();
             List<EmpModel> EmpList = new List<EmpModel>();

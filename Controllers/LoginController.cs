@@ -1,10 +1,6 @@
 ﻿using CRUD_MVC_WebApplication.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using CRUD_MVC_WebApplication.Repository;
+using System.Web.Mvc;
 
 namespace CRUD_MVC_WebApplication.Controllers
 {
