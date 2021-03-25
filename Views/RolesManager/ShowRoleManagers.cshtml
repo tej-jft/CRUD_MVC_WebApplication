@@ -47,15 +47,28 @@
             @Html.DisplayFor(modelItem => item.CreatedBy)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ModificationDate)
+            @if (string.Equals(item.ModificationDate,""))
+            {
+                @Html.Display("--")
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.ModificationDate)
+            }
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ModifiedBy)
+            @if (string.Equals(item.ModifiedBy, ""))
+            {
+                @Html.Display("--")
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.ModifiedBy)
+            }
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Edit", "EditExistingRole", new {  id=Convert.ToInt32(item.RoleId )}) |
+            @Html.ActionLink("Delete", "Delete", new { id= Convert.ToInt32(item.RoleId) })
         </td>
     </tr>
 }

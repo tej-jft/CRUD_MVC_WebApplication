@@ -54,5 +54,9 @@ namespace CRUD_MVC_WebApplication.Repository
             }
             return false;
         }
+        public bool GetRegistered(UserModel usr)
+        {
+            return true;
+        }
     }
 }

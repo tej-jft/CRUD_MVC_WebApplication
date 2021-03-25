@@ -59,7 +59,6 @@ namespace CRUD_MVC_WebApplication.Repository
             foreach (DataRow dr in dt.Rows)
             {
                 EmpList.Add(
-
                     new EmpModel
                     {
                         Empid = Convert.ToInt32(dr["Id"]),
@@ -118,7 +117,6 @@ namespace CRUD_MVC_WebApplication.Repository
                 return false;
             }
         }
-
         public EmpModel GetEmployee(int id)
         {
             connection();
@@ -129,7 +127,6 @@ namespace CRUD_MVC_WebApplication.Repository
             com.Parameters.AddWithValue("@id", id);
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataTable dt = new DataTable();
-
             con.Open();
             da.Fill(dt);
             con.Close();
@@ -138,7 +135,6 @@ namespace CRUD_MVC_WebApplication.Repository
             Emp.Name = Convert.ToString(dt.Rows[0]["Name"]);
             Emp.City = Convert.ToString(dt.Rows[0]["City"]);
             Emp.Address = Convert.ToString(dt.Rows[0]["Address"]);
-
             return Emp;
         }
     }

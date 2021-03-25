@@ -76,5 +76,52 @@ namespace CRUD_MVC_WebApplication.Repository
             return RoleList;
         }
 
+        public RolesModel GetRoleById(int RoleId)
+        {
+            connection();
+            RolesModel RoleView = new RolesModel();
+
+            SqlCommand com = new SqlCommand("GetRoleById", con);
+            com.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter da = new SqlDataAdapter(com);
+            com.Parameters.AddWithValue("RoleId", RoleId);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            da.Fill(dt);
+            con.Close();
+
+            RoleView.RoleId = Convert.ToInt32(dt.Rows[0]["RoleID"]);
+            RoleView.RoleName = Convert.ToString(dt.Rows[0]["RoleName"]);
+            RoleView.ControllerName = Convert.ToString(dt.Rows[0]["Controller"]);
+            RoleView.CreationDate = Convert.ToString(dt.Rows[0]["CreationDate"]);
+            RoleView.CreatedBy = Convert.ToString(dt.Rows[0]["CreatedBy"]);
+            RoleView.ModificationDate = Convert.ToString(dt.Rows[0]["ModificationDate"]);
+            RoleView.ModifiedBy = Convert.ToString(dt.Rows[0]["ModifiedBy"]);
+            return RoleView;
+        }
+
+        public bool ModifyRole(RolesModel role)
+        {
+            connection();
+            SqlCommand com = new SqlCommand("UpdateExistingRole", con);
+
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@RoleName", role.RoleName);
+            com.Parameters.AddWithValue("@Controller", role.ControllerName);
+            com.Parameters.AddWithValue("@ModifiedBy", role.ModifiedBy);
+            com.Parameters.AddWithValue("@RoleId", role.RoleId);
+            con.Open();
+            int i = com.ExecuteNonQuery();
+            con.Close();
+            if (i >= 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
    }
